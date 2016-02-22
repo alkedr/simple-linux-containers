@@ -3,6 +3,8 @@
 
 // TODO: get rid of libc, use only linux headers?
 
+// TODO: test security (container can't unmount root, remount it rw, doesn't have capabilities etc)
+
 
 #define _GNU_SOURCE
 
@@ -50,11 +52,12 @@ void hmlc_create_container(
   // TODO  (need to create directory and mount root there instead of mounting on top of itself)
   mount(parameters->fs_root, parameters->fs_root, NULL, MS_BIND | MS_RDONLY | MS_NOSUID, NULL);
 
+  // TODO: add array of mount() invocations to hmlc_create_container_parameters_t
   // TODO: mount all filesystems passed in parameters
   // TODO: support simplified mounting of 'special' filesystems like dev and proc
 
-  // Change current directory to avoid allocating memory to build full path to .dumblc directory.
-  // Performance penalty is negligible.
+  // Change current directory to simplify code by avoiding allocating memory and building full path
+  // to .dumblc directory. Performance penalty is negligible.
   chdir(parameters->fs_root);
 
   // TODO: report error if .dumblc doesn't exist
