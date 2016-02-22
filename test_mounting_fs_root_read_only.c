@@ -9,9 +9,13 @@
 #include <errno.h>
 
 int main() {
+
+  // does not work because of http://lwn.net/Articles/281157
+
   step("child: create container with separate mnt namespace");
   struct hmlc_create_container_parameters_t params;
-  params.fs_root = create_empty_fs_root_directory();
+  initialize_default_fs_root(&params.fs_root);
+  params.fs_root.mountflags |= MS_RDONLY;
   hmlc_create_container(&params, 0);
 
   assertIntEquals("open return value", -1, open("/file", O_CREAT));

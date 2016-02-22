@@ -35,7 +35,7 @@ int main() {
   } else {
     step("child: create container with separate uts namespace");
     struct hmlc_create_container_parameters_t params;
-    params.fs_root = create_empty_fs_root_directory();
+    initialize_default_fs_root(&params.fs_root);
     hmlc_create_container(&params, 0);
 
     const char * new_domain_name = "new_domain_name";

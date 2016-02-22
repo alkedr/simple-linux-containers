@@ -12,7 +12,7 @@ int main() {
 
   step("create container with separate user namespace");
   struct hmlc_create_container_parameters_t params;
-  params.fs_root = create_empty_fs_root_directory();
+  initialize_default_fs_root(&params.fs_root);
   hmlc_create_container(&params, 0);
 
   assertIntNotEquals("new uid", old_uid, getuid());

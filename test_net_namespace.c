@@ -21,7 +21,7 @@ int main() {
 
   step("create container with separate net namespace");
   struct hmlc_create_container_parameters_t params;
-  params.fs_root = create_empty_fs_root_directory();
+  initialize_default_fs_root(&params.fs_root);
   hmlc_create_container(&params, 0);
 
   assertIntEquals("ifaddrs count inside container", 1, get_ifaddrs_count());

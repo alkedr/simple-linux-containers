@@ -6,9 +6,20 @@
 // dumblc - Dumb Linux Containers
 
 
+struct hmlc_mount_t {
+  const char *source;
+  const char *target;
+  const char *filesystemtype;
+  unsigned long mountflags;
+  const void *data;
+};
+
+
 struct hmlc_create_container_parameters_t {
-  // fs_root must contain .dumblc directory
-  const char * fs_root;
+  // fs_root.source must contain .dumblc directory
+  struct hmlc_mount_t fs_root;
+  // TODO: null-terminated array of additional hmlc_mount_t's
+  // TODO: (null - hmlc_mount_t with all fields set to zero)
 };
 
 

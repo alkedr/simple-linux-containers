@@ -44,13 +44,14 @@ void hmlc_create_container(
   // (what mount --make-rprivate / does)
   mount("none", "/", NULL, MS_REC | MS_PRIVATE, NULL);
 
-  // mount parameters->fs_root on top of itself in our new namespace
-  // it will become our root filesystem
-  // Probably because pivot_root needs new_root to be a mount point
-  // TODO: why MS_NOSUID?
-  // TODO: support squashfs and files that contain filesystems
-  // TODO  (need to create directory and mount root there instead of mounting on top of itself)
-  mount(parameters->fs_root, parameters->fs_root, NULL, MS_BIND | MS_RDONLY | MS_NOSUID, NULL);
+  // mount container's root file system
+  mount(
+    parameters->fs_root.source,
+    parameters->fs_root.target,
+    parameters->fs_root.filesystemtype,
+    parameters->fs_root.mountflags,
+    parameters->fs_root.data
+  );
 
   // TODO: add array of mount() invocations to hmlc_create_container_parameters_t
   // TODO: mount all filesystems passed in parameters
@@ -58,10 +59,10 @@ void hmlc_create_container(
 
   // Change current directory to simplify code by avoiding allocating memory and building full path
   // to .dumblc directory. Performance penalty is negligible.
-  chdir(parameters->fs_root);
+  chdir(parameters->fs_root.target);
 
   // TODO: report error if .dumblc doesn't exist
-  // make parameters->fs_root new /, .dumblc will contain old /
+  // make current dir (parameters->fs_root.target) new /, .dumblc will contain old /
   pivot_root(".", ".dumblc");
 
   // man pivot_root recommends to change work dir to '/' after pivot_root

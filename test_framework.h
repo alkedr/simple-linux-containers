@@ -5,6 +5,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <sys/mount.h>
 
 
 #define GREEN "\033[1;32m"
@@ -85,21 +86,18 @@ static void assertFileDoesNotExist(const char * description, const char * file_n
 #define step(message, args...) fprintf(stdout, "LOG : " message "\n", ## args);
 
 
+#define FS_ROOT_SOURCE "build/fs_root_source"
+#define FS_ROOT_TARGET "build/fs_root_target"
 
-
-static const char * create_empty_fs_root_directory() {
-  mkdir("build/test_dir", S_IRWXU | S_IRWXG | S_IRWXO);
-  mkdir("build/test_dir/.dumblc", S_IRWXU | S_IRWXG | S_IRWXO);
-  return "build/test_dir";
-}
-
-
-static const char * concat_path_segments(const char * segment1, const char * segment2) {
-  char * result = malloc(strlen(segment1) + strlen(segment2) + 2);
-  strcpy(result, segment1);
-  strcat(result, "/");
-  strcat(result, segment2);
-  return result;
+static void initialize_default_fs_root(struct hmlc_mount_t * mount) {
+  mkdir(FS_ROOT_SOURCE, S_IRWXU | S_IRWXG | S_IRWXO);
+  mkdir(FS_ROOT_SOURCE "/.dumblc", S_IRWXU | S_IRWXG | S_IRWXO);
+  mkdir(FS_ROOT_TARGET, S_IRWXU | S_IRWXG | S_IRWXO);
+  mount->source = FS_ROOT_SOURCE;
+  mount->target = FS_ROOT_TARGET;
+  mount->filesystemtype = NULL;
+  mount->mountflags = MS_BIND;
+  mount->data = NULL;
 }
 
 
