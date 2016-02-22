@@ -1,8 +1,9 @@
 #pragma once
 
-
 // hmlc - Highly Modular Linux Containers
-// Set of tools for working with linux containers that at least tries to be simple.
+// A set of tools for working with linux containers that at least tries to be simple.
+
+// dumblc - Dumb Linux Containers
 
 
 struct hmlc_create_container_parameters_t {
