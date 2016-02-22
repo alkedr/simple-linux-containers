@@ -33,7 +33,7 @@ void hmlc_create_container(
 ) {
   // TODO: handle all errors
   // TODO: check nulls in parameters
-  // TODO: check result for null before every write
+  // TODO: check result for null before every write to its fields
 
   // create new namespaces
   unshare(CLONE_NEWIPC | CLONE_NEWNET | CLONE_NEWNS | CLONE_NEWPID | CLONE_NEWUSER | CLONE_NEWUTS);
@@ -46,11 +46,12 @@ void hmlc_create_container(
   // it will become our root filesystem
   // Probably because pivot_root needs new_root to be a mount point
   // TODO: why MS_NOSUID?
-  // TODO: MS_RDONLY, place .oldroot somewhere else, remove it in separate thread?
-  // TODO: or require all images to have at least one directory with well-known name?
   // TODO: support squashfs and files that contain filesystems
   // TODO  (need to create directory and mount root there instead of mounting on top of itself)
-  mount(parameters->fs_root, parameters->fs_root, NULL, MS_BIND | MS_NOSUID, NULL);
+  mount(parameters->fs_root, parameters->fs_root, NULL, MS_BIND | MS_RDONLY | MS_NOSUID, NULL);
+
+  // TODO: mount all filesystems passed in parameters
+  // TODO: support simplified mounting of 'special' filesystems like dev and proc
 
   // Change current directory to avoid allocating memory to build full path to .dumblc directory.
   // Performance penalty is negligible.
