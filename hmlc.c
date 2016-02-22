@@ -41,7 +41,7 @@ void hmlc_create_container(
   // ensure that changes to our mount namespace do not "leak" to outside namespaces (what mount --make-rprivate / does)
   mount("none", "/", NULL, MS_REC | MS_PRIVATE, NULL);
 
-  // mount the parameters->fs_root on top of itself in our new namespace
+  // mount parameters->fs_root on top of itself in our new namespace
 	// it will become our root filesystem
   // Probably because pivot_root needs new_root to be a mount point
   // TODO: why MS_NOSUID?
