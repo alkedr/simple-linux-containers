@@ -22,3 +22,5 @@ $(BUILD_DIR)/test_%: test_%.c $(HEADERS) $(SOURCES) $(TEST_HEADERS) Makefile
 	@echo "CC  $@"
 	@gcc -Wall -Wextra -Wno-unused-parameter -Wno-unused-function $< $(SOURCES) -o $@
 
+clean:
+	rm -Rf $(BUILD_DIR)

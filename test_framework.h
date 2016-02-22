@@ -89,6 +89,7 @@ static void assertFileDoesNotExist(const char * description, const char * file_n
 
 static const char * create_empty_fs_root_directory() {
   mkdir("build/test_dir", S_IRWXU | S_IRWXG | S_IRWXO);
+  mkdir("build/test_dir/.dumblc", S_IRWXU | S_IRWXG | S_IRWXO);
   return "build/test_dir";
 }
 

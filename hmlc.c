@@ -26,7 +26,6 @@ int capset(cap_user_header_t h, cap_user_data_t d);
 
 
 // TODO: pass all parameters for fs_root mounting to allow squashfs and files that contain filesystems
-// TODO: pass oldroot dir (tmpdir) in parameters so that we don't have to remove it
 
 void hmlc_create_container(
         const struct hmlc_create_container_parameters_t * parameters,
@@ -44,27 +43,28 @@ void hmlc_create_container(
   mount("none", "/", NULL, MS_REC | MS_PRIVATE, NULL);
 
   // mount parameters->fs_root on top of itself in our new namespace
-	// it will become our root filesystem
+  // it will become our root filesystem
   // Probably because pivot_root needs new_root to be a mount point
   // TODO: why MS_NOSUID?
   // TODO: MS_RDONLY, place .oldroot somewhere else, remove it in separate thread?
   // TODO: or require all images to have at least one directory with well-known name?
   // TODO: support squashfs and files that contain filesystems
   // TODO  (need to create directory and mount root there instead of mounting on top of itself)
-	mount(parameters->fs_root, parameters->fs_root, NULL, MS_BIND | MS_NOSUID, NULL);
+  mount(parameters->fs_root, parameters->fs_root, NULL, MS_BIND | MS_NOSUID, NULL);
 
-  // step inside the to-be-root-directory
-	chdir(parameters->fs_root);
+  // Change current directory to avoid allocating memory to build full path to .dumblc directory.
+  // Performance penalty is negligible.
+  chdir(parameters->fs_root);
 
-	// setup needed subdirectories
-	rmdir(".oldroot");
-	mkdir(".oldroot", 0755);
+  // TODO: report error if .dumblc doesn't exist
+  // make parameters->fs_root new /, .dumblc will contain old /
+  pivot_root(".", ".dumblc");
 
-  // parameters->fs_root becomes our new root, detach the old one
-	pivot_root(".", ".oldroot");
-	// TODO: chdir("/");  as man pivot_root suggests
-	umount2(".oldroot", MNT_DETACH);
-	rmdir(".oldroot");
+  // man pivot_root recommends to change work dir to '/' after pivot_root
+  chdir("/");
+
+  // unmount old /
+  umount2(".dumblc", MNT_DETACH);
 }
 
 

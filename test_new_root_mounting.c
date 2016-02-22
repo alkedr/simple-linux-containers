@@ -1,3 +1,6 @@
+#define _GNU_SOURCE
+#include <unistd.h>
+
 #include "hmlc.h"
 #include "test_framework.h"
 

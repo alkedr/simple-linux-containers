@@ -7,6 +7,7 @@
 
 
 struct hmlc_create_container_parameters_t {
+  // fs_root must contain .dumblc directory
   const char * fs_root;
 };
 
