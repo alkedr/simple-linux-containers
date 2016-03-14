@@ -1,4 +1,4 @@
-#include "hmlc.h"
+#include "slc.h"
 #include "test_framework.h"
 
 #include <unistd.h>
@@ -34,9 +34,9 @@ int main() {
     assertStrEquals("parent: host name", old_host_name, get_host_name());
   } else {
     step("child: create container with separate uts namespace");
-    struct hmlc_create_container_parameters_t params;
+    struct slc_create_container_parameters params;
     initialize_default_fs_root(&params.fs_root);
-    hmlc_create_container(&params, 0);
+    slc_create_container(&params, 0);
 
     const char * new_domain_name = "new_domain_name";
     const char * new_host_name = "new_host_name";

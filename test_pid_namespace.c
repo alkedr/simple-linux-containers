@@ -1,4 +1,4 @@
-#include "hmlc.h"
+#include "slc.h"
 #include "test_framework.h"
 
 #include <unistd.h>
@@ -7,9 +7,9 @@
 
 int main() {
   step("parent: create container with separate pid namespace");
-  struct hmlc_create_container_parameters_t params;
+  struct slc_create_container_parameters params;
   initialize_default_fs_root(&params.fs_root);
-  hmlc_create_container(&params, 0);
+  slc_create_container(&params, 0);
 
   step("parent: fork");
   int cpid = fork();

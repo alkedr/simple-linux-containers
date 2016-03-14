@@ -89,9 +89,9 @@ static void assertFileDoesNotExist(const char * description, const char * file_n
 #define FS_ROOT_SOURCE "build/fs_root_source"
 #define FS_ROOT_TARGET "build/fs_root_target"
 
-static void initialize_default_fs_root(struct hmlc_mount_t * mount) {
+static void initialize_default_fs_root(struct slc_mount * mount) {
   mkdir(FS_ROOT_SOURCE, S_IRWXU | S_IRWXG | S_IRWXO);
-  mkdir(FS_ROOT_SOURCE "/.dumblc", S_IRWXU | S_IRWXG | S_IRWXO);
+  mkdir(FS_ROOT_SOURCE "/.slc", S_IRWXU | S_IRWXG | S_IRWXO);
   mkdir(FS_ROOT_TARGET, S_IRWXU | S_IRWXG | S_IRWXO);
   mount->source = FS_ROOT_SOURCE;
   mount->target = FS_ROOT_TARGET;

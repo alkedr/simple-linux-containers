@@ -1,4 +1,4 @@
-#include "hmlc.h"
+#include "slc.h"
 #include "test_framework.h"
 
 #include <ifaddrs.h>
@@ -20,9 +20,9 @@ int main() {
   assertGreaterThan("ifaddrs count outside container", 1, get_ifaddrs_count());
 
   step("create container with separate net namespace");
-  struct hmlc_create_container_parameters_t params;
+  struct slc_create_container_parameters params;
   initialize_default_fs_root(&params.fs_root);
-  hmlc_create_container(&params, 0);
+  slc_create_container(&params, 0);
 
   assertIntEquals("ifaddrs count inside container", 1, get_ifaddrs_count());
 

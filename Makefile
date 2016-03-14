@@ -1,6 +1,6 @@
 BUILD_DIR := build
-HEADERS := hmlc.h
-SOURCES := hmlc.c
+HEADERS := slc.h
+SOURCES := slc.c
 TEST_HEADERS := test_framework.h
 TEST_SOURCES := $(wildcard test_*.c)
 TEST_EXECUTABLES := $(addprefix $(BUILD_DIR)/,$(patsubst %.c,%,$(TEST_SOURCES)))
@@ -24,3 +24,10 @@ $(BUILD_DIR)/test_%: test_%.c $(HEADERS) $(SOURCES) $(TEST_HEADERS) Makefile
 
 clean:
 	rm -Rf $(BUILD_DIR)
+
+
+
+# TODO: build container:
+# create fs_root
+# mksquashfs fs_root busybox.squashfs -comp lzo
+

@@ -1,4 +1,4 @@
-#include "hmlc.h"
+#include "slc.h"
 #include "test_framework.h"
 
 #include <unistd.h>
@@ -19,9 +19,9 @@ int main() {
     assertFileExists("parent", FS_ROOT_SOURCE "/dir2/file");
   } else {
     step("child: create container with separate mnt namespace");
-    struct hmlc_create_container_parameters_t params;
+    struct slc_create_container_parameters params;
     initialize_default_fs_root(&params.fs_root);
-    hmlc_create_container(&params, 0);
+    slc_create_container(&params, 0);
 
     step("child: create dir1");
     mkdir("dir1", S_IRWXU | S_IRWXG | S_IRWXO);
